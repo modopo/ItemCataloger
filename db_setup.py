@@ -48,3 +48,7 @@ class Items(Base):
             'name'          :self.name,
             'description'   : self.description,
         }
+
+    engine = create_engine('sqlite:///catalog.db')
+
+    Base.metadata.create_all(engine)
