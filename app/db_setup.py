@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
 Base = declarative_base()
+engine = create_engine('sqlite:///catalog.db')
 
 class User(Base):
     __tablename__ = 'user'
@@ -49,6 +50,4 @@ class Items(Base):
             'description'   : self.description,
         }
 
-    engine = create_engine('sqlite:///catalog.db')
-
-    Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)
