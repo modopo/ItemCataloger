@@ -2,10 +2,9 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship
 from sqlalchemy import create_engine
-from instance.config import DB_URI
 
 Base = declarative_base()
-engine = create_engine(DB_URI)
+engine = create_engine('sqlite:///catalog.db')
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False,
                                          bind=engine))
 
