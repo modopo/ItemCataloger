@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask import session as login_session
 
-app = Flask(__name__)
+from app.db_setup import db_session, Categories, Items
 
 @app.route('/')
 @app.route('/category')
