@@ -3,22 +3,24 @@ from flask import session as login_session
 
 from app.db_setup import db_session, Categories, Items
 
-@app.route('/')
-@app.route('/category')
-def showCategories():
+category_owner = Blueprint('category_owner', __name__)
+
+
+@category_owner.route('/category/<int:category_id>')
+def showCategories(category_id):
     return "list of Categories"
 
-@app.route('/category/new',
+@category_owner.route('/category/new',
            methods=['GET', 'POST'])
 def newCategory():
     return "This is a place to create a new category"
 
-@app.route('/category/<int:category_id>/edit',
+@category_owner.route('/category/<int:category_id>/edit',
            methods=['GET', 'POST'])
 def editCategory():
     return "This is where you edit a category"
 
-@app.route('/category/<int:category_id>/delete',
+@category_owner.route('/category/<int:category_id>/delete',
            methods=['GET', 'POST'])
 def deleteCategory():
     return "this is where you delete a category"

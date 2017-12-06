@@ -3,9 +3,8 @@ from flask import session as login_session
 
 from app.db_setup import db_session, Categories, Items
 
-@app.route('/category/<int:category_id>')
-@app.route('/category/<int:category_id>/items')
-def showItems(category_id):
+@app.route('/category/<int:category_id>/item/<int:item_id>')
+def showItems(category_id, item_id):
     return "this is where you list out items for that particular category"
 
 @app.route('/category/<int:category_id>/new',
@@ -13,12 +12,12 @@ def showItems(category_id):
 def createItem(category_id):
     return "this is where you create a new item for that particular category"
 
-@app.route('/category/<int:category_id>/<int:item_id>/edit',
+@app.route('/category/<int:category_id>/item/<int:item_id>/edit',
            methods=['GET', 'POST'])
 def editItem(category_id, item_id):
     return "this is where you edit an item"
 
-@app.route('/category/<int:category_id>/<int:item_id>/delete',
+@app.route('/category/<int:category_id>/item/<int:item_id>/delete',
            methods=['GET', 'POST'])
 def deleteItem(category_id, item_id):
     return "this is where you delete an item"
