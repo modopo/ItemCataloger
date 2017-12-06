@@ -22,24 +22,3 @@ def editCategory():
            methods=['GET', 'POST'])
 def deleteCategory():
     return "this is where you delete a category"
-
-@app.route('/category/<int:category_id>')
-@app.route('/category/<int:category_id>/items')
-def showItems(category_id):
-    return "this is where you list out items for that particular category"
-
-@app.route('/category/<int:category_id>/new',
-           methods=['GET', 'POST'])
-def createItem(category_id):
-    return "this is where you create a new item for that particular category"
-
-@app.route('/category/<int:category_id>/<int:item_id>/edit',
-           methods=['GET', 'POST'])
-def editItem(category_id, item_id):
-    return "this is where you edit an item"
-
-@app.route('/category/<int:category_id>/<int:item_id>/delete',
-           methods=['GET', 'POST'])
-def deleteItem(category_id, item_id):
-    return "this is where you delete an item"
-
