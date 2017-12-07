@@ -9,6 +9,8 @@ category_owner = Blueprint('category_owner', __name__)
 
 @category_owner.route('/category/<int:category_id>')
 def showCategories(category_id):
+    category = db_session.query(Categories).filter_by(id = category_id).one()
+    items = db_session.query(Items).filter_by(category_id = category_id).all()
     return "list of Categories"
 
 @category_owner.route('/category/new',
