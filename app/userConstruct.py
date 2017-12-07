@@ -1,5 +1,17 @@
 from app.db_setup import db_session, User
 
-def create_user(login_session):
+def userCreate(login_session):
     newUser = User(name = login_session['username'], email = login_session[
         'email'], picture = login_session['picture'])
+
+def userGet(user_id):
+    user = db_session.query(User).filter_by(id = user_id).one()
+    return user
+
+def userGetId(user_email):
+    try:
+        user = db_session.query(User).filter_by(email = user_email).one()
+        return user.id
+    except:
+        return None
+
