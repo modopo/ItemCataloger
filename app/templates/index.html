@@ -31,7 +31,8 @@
         <div class="col-md-5">
             <h2>Latest Items:</h2>
             {% for item in items  %}
-                <a href="{{url_for('item_owner.showItem', category_id=item.category_id, item_id=item.id)}}">{{book.name}} by {{book.author}} </a>
+                <a
+                        href="{{url_for('item_owner.showItem', category_id=item.category_id, item_id=item.id)}}">{{item.name}}</a>
                 <br>
                 <br>
             {% endfor %}
