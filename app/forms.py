@@ -7,7 +7,7 @@ class BaseForm(Form):
     class Meta:
         csrf = True
         csrf_class = SessionCSRF
-        csrf_secret = config.APP_SECRET_KEY
+        csrf_secret = config.CSRF_SECRET_KEY
 
         @property
         def csrf_context(self):
