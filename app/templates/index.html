@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% include "partials/header.html" %}
+{% include "partial/header.html" %}
 
 <div>
     <h1 class="text-center" >Item Catalogue</h1>
@@ -23,7 +23,7 @@
         <div class="col-md-5">
             <h2>Categories:</h2>
             {% for category in categories  %}
-                <a href="{{url_for('category_owner.showCategory', category_id=category.id)}}">{{category.name}}</a>
+                <a href="{{url_for('category_owner.showCategories', category_id=category.id)}}">{{category.name}}</a>
                 <br>
                 <br>
             {% endfor %}
@@ -48,6 +48,6 @@
     </div>
 </div>
 
-{% include "partials/footer.html" %}
+{% include "partial/footer.html" %}
 
 {% endblock content %}

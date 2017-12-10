@@ -1,4 +1,4 @@
-from .app.db_setup import db_session, User, Categories, Items
+from db_setup import db_session, User, Categories, Items
 
 user1 = User(name = 'Jon Smith', email = 'jonsmith@gmail.com')
 db_session.add(user1)
