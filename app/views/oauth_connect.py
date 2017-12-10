@@ -9,20 +9,18 @@ import httplib2
 import requests
 import json
 
-from instance.config import GOOGLE_CLIENT_ID
+from config import GOOGLE_CLIENT_ID
 
-from app.userConstruct import userGetId, userCreate
+oauth_blueprint = Blueprint('user_owner', __name__)
 
-user_owner = Blueprint('user_owner', __name__)
-
-@user_owner.route('/login')
+@oauth_blueprint.route('/login')
 def login():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
     login_session['state'] = state
     return render_template('login.html', state = state)
 
-@user_owner.route('/gconnect', methods=['POST'])
+@oauth_blueprint.route('/gconnect', methods=['POST'])
 def gconnect():
     # Validate state token
     if request.args.get('state') != login_session['state']:
@@ -111,7 +109,7 @@ def gconnect():
     return output
 
 # OAuth disconnect - gdisconnect
-@user_owner.route('/gdisconnect')
+@oauth_blueprint.route('/gdisconnect')
 def gdisconnect():
     # Only disconnect a connected user.
     access_token = login_session.get('access_token')

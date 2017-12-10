@@ -2,22 +2,22 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask import session as login_session
 
 from app.forms import categoryForm
-from app.loginVerification import login_require
+from app.decoratorlogin import login_require
 
 from app.db_setup import db_session, Categories, Items
 
-category_owner = Blueprint('category_owner', __name__)
+category_blueprint = Blueprint('category_owner', __name__)
 
 # displays all the items within the category
-@category_owner.route('/category/<int:category_id>')
+@category_blueprint.route('/category/<int:category_id>')
 def showCategories(category_id):
     category = db_session.query(Categories).filter_by(id = category_id).one()
     items = db_session.query(Items).filter_by(category_id = category_id).all()
     return render_template('category.html', category_id = category_id,
                            category = category, items = items)
 # create a new category
-@category_owner.route('/category/new',
-           methods=['GET', 'POST'])
+@category_blueprint.route('/category/new',
+                          methods=['GET', 'POST'])
 @login_require
 def newCategory():
     form = categoryForm(request.form)
@@ -30,8 +30,8 @@ def newCategory():
         return redirect(url_for('home.index'))
     return render_template('/newcategory.html', form = form)
 
-@category_owner.route('/category/<int:category_id>/edit',
-           methods=['GET', 'POST'])
+@category_blueprint.route('/category/<int:category_id>/edit',
+                          methods=['GET', 'POST'])
 @login_require
 def editCategory(category_id):
     edit = db_session.query(Categories).filter_by(id = category_id).one()
@@ -51,8 +51,8 @@ def editCategory(category_id):
         return render_template('/editcategory.html', category = edit,
                                form = form)
 
-@category_owner.route('/category/<int:category_id>/delete',
-           methods=['GET', 'POST'])
+@category_blueprint.route('/category/<int:category_id>/delete',
+                          methods=['GET', 'POST'])
 @login_require
 def deleteCategory(category_id):
     delete = db_session.query(Categories).filter_by(id = category_id).one()

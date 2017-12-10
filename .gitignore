@@ -1,3 +1,6 @@
 .idea/
 venv3/
 instance/__pycache__/
+__pycache__/
+app/__pycache__/
+app/views/__pycache__/

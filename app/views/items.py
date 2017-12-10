@@ -4,22 +4,22 @@ from flask import session as login_session
 from sqlalchemy import asc
 
 from app.forms import itemForm
-from app.loginVerification import login_require
+from app.decoratorlogin import login_require
 
 from app.db_setup import db_session, Categories, Items
 
-item_owner = Blueprint('item_owner', __name__)
+item_blueprint = Blueprint('item_owner', __name__)
 
 # displays item properties
-@item_owner.route('/category/<int:category_id>/item/<int:item_id>')
+@item_blueprint.route('/category/<int:category_id>/item/<int:item_id>')
 def showItem(category_id, item_id):
     item = db_session.query(Items).filter_by(id = item_id).all()
     return render_template('item.html', category_id = category_id,
                                         item = item)
 
 # create a new item
-@item_owner.route('/category/<int:category_id>/new',
-           methods=['GET', 'POST'])
+@item_blueprint.route('/category/<int:category_id>/new',
+                      methods=['GET', 'POST'])
 @login_require
 def createItem(category_id):
     form = itemForm(request.form)
@@ -36,8 +36,8 @@ def createItem(category_id):
         return redirect(url_for('home.index'))
     return render_template('newitem.html', category = category, form = form)
 
-@item_owner.route('/category/<int:category_id>/item/<int:item_id>/edit',
-           methods=['GET', 'POST'])
+@item_blueprint.route('/category/<int:category_id>/item/<int:item_id>/edit',
+                      methods=['GET', 'POST'])
 @login_require
 def editItem(category_id, item_id):
     edit = db_session.query(Items).filter_by(id = item_id).one()
@@ -66,8 +66,8 @@ def editItem(category_id, item_id):
                                item_id = item_id, item = edit, category =
                                category, form = form)
 
-@item_owner.route('/category/<int:category_id>/item/<int:item_id>/delete',
-           methods=['GET', 'POST'])
+@item_blueprint.route('/category/<int:category_id>/item/<int:item_id>/delete',
+                      methods=['GET', 'POST'])
 @login_require
 def deleteItem(category_id, item_id):
     delete = db_session.query(Item).filter_by(id = item_id).one()

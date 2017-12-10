@@ -1,4 +1,4 @@
-import instance.config as config
+import config as config
 from flask import session
 from wtforms import Form, StringField, validators
 from wtforms.csrf.session import SessionCSRF
