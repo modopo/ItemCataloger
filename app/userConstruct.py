@@ -14,4 +14,3 @@ def userGetId(user_email):
         return user.id
     except:
         return None
-
