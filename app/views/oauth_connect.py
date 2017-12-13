@@ -9,6 +9,8 @@ import httplib2
 import requests
 import json
 
+from app.userConstruct import userGetId, userCreate
+
 from config import GOOGLE_CLIENT_ID
 
 oauth_blueprint = Blueprint('user_owner', __name__)
@@ -18,7 +20,7 @@ def login():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
     login_session['state'] = state
-    return render_template('login.html', state = state)
+    return render_template('login.html', STATE = state)
 
 @oauth_blueprint.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -27,7 +29,6 @@ def gconnect():
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-
     # Obtain authorization code
     code = request.data
     try:
@@ -43,6 +44,7 @@ def gconnect():
 
     # Check that the access token is valid.
     login_session['access_token'] = credentials.access_token
+    #print("access token: {}".format(access_token))
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            %  login_session['access_token'])
     h = httplib2.Http()
@@ -92,9 +94,9 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
-    user_id = getUserID((login_session['email']))
+    user_id = userGetId((login_session['email']))
     if not user_id:
-        user_id= createUser(login_session)
+        user_id= userCreate(login_session)
     login_session['user_id'] = user_id
 
     output = ''
@@ -108,10 +110,10 @@ def gconnect():
     print ("done!")
     return output
 
-# OAuth disconnect - gdisconnect
+
 @oauth_blueprint.route('/gdisconnect')
 def gdisconnect():
-    # Only disconnect a connected user.
+        # Only disconnect a connected user.
     access_token = login_session.get('access_token')
     if access_token is None:
         response = make_response(
@@ -123,15 +125,15 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
 
     if result['status'] == '200':
-        # Reset the user's sesson.
+        # Reset the user's session.
         del login_session['access_token']
         del login_session['gplus_id']
         del login_session['username']
         del login_session['email']
         del login_session['picture']
-        flash("You have successfully been logged out.")
-        return redirect(url_for('home.index'))
+        flash('You have been successfully logged out.')
+        return redirect(url_for('index.index'))
     else:
-        # For whatever reason, the given token was invalid.
-        flash("You were not logged in")
-        return redirect(url_for('home.index'))
+        # For any other reason, the given token was invalid
+        flash('You were not able to log in.')
+        return redirect(url_for('index.index'))
