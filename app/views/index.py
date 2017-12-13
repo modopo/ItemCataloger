@@ -2,7 +2,7 @@ from flask import Blueprint, render_template
 from sqlalchemy import asc, desc
 from app.db_setup import db_session, Categories, Items
 
-index_blueprint = Blueprint('index', __name__)
+index_blueprint = Blueprint('home', __name__)
 
 @index_blueprint.route('/')
 @index_blueprint.route('/category')

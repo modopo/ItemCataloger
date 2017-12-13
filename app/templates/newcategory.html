@@ -1,10 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-{% include "partials/header.html" %}
-    this is the new category page
-    <br>
-    <a href="{{url_for('index.index')}}">Home</a>
-    <br>
+{% include "partial/header.html" %}
+    <p>Enter a new category:</p>
 
     <form method="POST">
         {{ form.csrf_token }}
@@ -15,11 +12,11 @@
         {% endif %}
         
         <button type="submit">Create</button>
-        <a href="{{url_for('index.index')}}">Cancel</a>
+        <a href="{{url_for('home.index')}}">Cancel</a>
     </form>
 
     <br>
     <br>
 
-{% include "partials/footer.html" %}
+{% include "partial/footer.html" %}
 {% endblock content %}

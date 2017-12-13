@@ -132,8 +132,8 @@ def gdisconnect():
         del login_session['email']
         del login_session['picture']
         flash('You have been successfully logged out.')
-        return redirect(url_for('index.index'))
+        return redirect(url_for('home.index'))
     else:
         # For any other reason, the given token was invalid
         flash('You were not able to log in.')
-        return redirect(url_for('index.index'))
+        return redirect(url_for('home.index'))
