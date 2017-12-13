@@ -56,7 +56,7 @@ def editCategory(category_id):
 @login_require
 def deleteCategory(category_id):
     delete = db_session.query(Categories).filter_by(id = category_id).one()
-
+    form = categoryForm(request.form)
     if delete.user_id != login_session['user_id']:
         flash('Unauthorized to delete this category')
         return redirect(url_for('category_owner.showCategory',
@@ -68,4 +68,5 @@ def deleteCategory(category_id):
         flash('Category {} successfully deleted!'.format(delete.name))
         return redirect(url_for('home.index'))
     else:
-        return render_template('/deletecategory.html', category = delete)
+        return render_template('/deletecategory.html', category = delete,
+                               form = form)

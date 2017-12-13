@@ -1,18 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
 {% include "partial/header.html" %}
-    <p>Enter a new category:</p>
 
-    <form method="POST">
-        {{ form.csrf_token }}
-        <div>New Category: {{ form.name(class="form_placeholder") }}</div>
+    <div class="col-sm-10 col-sm-offset-2">
+        <h2>Create a new category</h2>
+    </div>
+    <form class="col-sm-10 col-sm-offset-2" method="POST">
+    {{ form.csrf_token }}
+        <div class="form-group">
+            <label class="'col-sm-2 control-label">New Category:</label>
 
-        {% if form.name.errors %}
-            <ul class="errors">{% for error in form.name.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        
-        <button type="submit">Create</button>
-        <a href="{{url_for('home.index')}}">Cancel</a>
+            <div class="'col-sm-10">
+            {{ form.name(class="form_placeholder") }}
+            </div>
+
+            {% if form.name.errors %}
+                <div class="col-sm-10 col-sm-offset-2">
+                <ul class="errors">{% for error in form.name.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-success" type="submit">Create</button>
+            <a class="btn btn-default"
+               href="{{url_for('home.index')}}">Cancel</a>
+            </div>
+        </div>
     </form>
 
     <br>
