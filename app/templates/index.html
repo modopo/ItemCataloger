@@ -25,14 +25,12 @@
             {% for category in categories  %}
                 <a href="{{url_for('category_owner.showCategories', category_id=category.id)}}">{{category.name}}</a>
                 <br>
-                <br>
             {% endfor %}
         </div>
         <div class="col-md-5">
             <h2>Latest Items:</h2>
             {% for item in items  %}
                 <a href="{{url_for('item_owner.showItem', category_id=item.category_id, item_id=item.id)}}">{{item.name}}</a>
-                <br>
                 <br>
             {% endfor %}
         </div>

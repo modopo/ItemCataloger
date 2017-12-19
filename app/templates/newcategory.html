@@ -2,16 +2,16 @@
 {% block content %}
 {% include "partial/header.html" %}
 
-    <section class="row">
+    <section class="container-fluid">
         <div class="col-md-12">
-            <h2>Create a new category</h2>
+            <h1>Create a new category</h1>
         </div>
     </section>
 
-    <form class="col-md-12" method="POST">
+    <form class="form-horizontal container-fluid" method="POST">
     {{ form.csrf_token }}
         <div class="form-group">
-            <label class="col-md-2 control-label">New Category:</label>
+            <label class="control-label">New Category:</label>
 
             {% if form.name.errors %}
                 <div class="col-md-12">
@@ -20,23 +20,21 @@
             {% endif %}
 
             <div class="col-md-12">
-            {{ form.name(class="form_placeholder") }}
+            {{ form.name(class="form-control") }}
             </div>
 
         </div>
 
-        <div class="form-group">
-            <div class="col-md-12">
-                <br>
-                <button class="btn btn-success" type="submit">Create</button>
-                <a class="btn btn-default"
-                   href="{{url_for('home.index')}}">Cancel</a>
-            </div>
+        <div class="container-fluid">
+            <form class="form-group">
+                <div class="col-md-12">
+                    <button class="btn btn-success" type="submit">Create</button>
+                    <a class="btn btn-default"
+                       href="{{url_for('home.index')}}">Cancel</a>
+                </div>
+            </form>
         </div>
     </form>
-
-    <br>
-    <br>
 
 {% include "partial/footer.html" %}
 {% endblock content %}
