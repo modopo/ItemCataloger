@@ -21,20 +21,20 @@ def showItem(category_id, item_id):
 @item_blueprint.route('/category/<int:category_id>/new',
                       methods=['GET', 'POST'])
 @login_require
-def createItem(category_id):
+def newItem(category_id):
     form = itemForm(request.form)
-    category = db_session.query(Categories).order_by(asc(Categories.name))
+    category = db_session.query(Categories).filter_by(id = category_id)
     if request.method == 'POST' and form.validate():
-        c = db_session.query(Categories).\
-            filter_by(Categories.name == request.form['category']).one()
         new = Items(name = request.form['name'],
                     description = request.form['description'],
-                    category = c)
+                    category_id = category_id,
+                    user_id = login_session['user_id'])
         db_session.add(new)
         db_session.commit()
         flash('New item {} successfully created!'.format(new.name))
         return redirect(url_for('home.index'))
-    return render_template('newitem.html', category = category, form = form)
+    return render_template('newitem.html', category_id = category_id, form =
+    form)
 
 @item_blueprint.route('/category/<int:category_id>/item/<int:item_id>/edit',
                       methods=['GET', 'POST'])

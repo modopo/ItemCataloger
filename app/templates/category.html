@@ -14,10 +14,7 @@
 
             <a role="button" class="btn btn-danger btn-sm"
                href="{{url_for('category_owner.deleteCategory', category_id=category.id)}}">Delete category</a>
-            <br>
         </div>
-        
-        <br>
         <div class = 'flash'>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -29,8 +26,13 @@
             {% endif %}
             {% endwith %}
         </div>
-
-
+            <h2>Items:</h2>
+            <div class="form-group">
+                <br>
+                    <a role="button" class="btn btn-default"
+                       href="{{url_for('item_owner.newItem', category_id=category.id)}}">Add item</a>
+                <br>
+            </div>
         <div>
             {% for item in items  %}
                 <h2>{{item.name}}</h2>
