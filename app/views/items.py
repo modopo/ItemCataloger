@@ -13,8 +13,11 @@ item_blueprint = Blueprint('item_owner', __name__)
 # displays item properties
 @item_blueprint.route('/category/<int:category_id>/item/<int:item_id>')
 def showItem(category_id, item_id):
-    item = db_session.query(Items).filter_by(id = item_id).all()
+    item = db_session.query(Items).filter_by(id = item_id).one()
+    category = db_session.query(Categories).filter_by(id = category_id).one()
     return render_template('item.html', category_id = category_id,
+                                        item_id = item_id,
+                                        category = category,
                                         item = item)
 
 # create a new item
@@ -31,16 +34,15 @@ def newItem(category_id):
         db_session.add(new)
         db_session.commit()
         flash('New item {} successfully created!'.format(new.name))
-        return redirect(url_for('home.index'))
-    return render_template('newitem.html', category_id = category_id, form =
-    form)
+        return redirect(url_for('category_owner.showCategories', category_id = category_id))
+    return render_template('newitem.html', category_id = category_id, form = form)
 
 @item_blueprint.route('/category/<int:category_id>/item/<int:item_id>/edit',
                       methods=['GET', 'POST'])
 @login_require
 def editItem(category_id, item_id):
     edit = db_session.query(Items).filter_by(id = item_id).one()
-    category = db_session.query(Categories).order_by(asc(Categories.name))
+    category = db_session.query(Categories).filter_by(id=category_id).one()
     form = itemForm(request.form)
 
     if edit.user_id != login_session['user_id']:
@@ -52,24 +54,19 @@ def editItem(category_id, item_id):
             edit.name = request.form['name']
         if request.form['description']:
             edit.description = request.form['description']
-        if request.form['category']:
-            category = db_session.query(Categories).filter_by(
-                Categories.name == request.form['category']).one()
-            edit.category = category
         db_session.add(edit)
         db_session.commit()
         flash('Item {} edited successfully!'.format(edit.name))
-        return redirect(url_for('home.index'))
+        return redirect(url_for('item_owner.showItem', category_id = category_id, item_id = item_id))
     else:
-        return render_template('/edititem.html', category_id = category_id,
-                               item_id = item_id, item = edit, category =
-                               category, form = form)
+        return render_template('/edititem.html', category = category,
+                                                item = edit, form = form)
 
 @item_blueprint.route('/category/<int:category_id>/item/<int:item_id>/delete',
                       methods=['GET', 'POST'])
 @login_require
 def deleteItem(category_id, item_id):
-    delete = db_session.query(Item).filter_by(id = item_id).one()
+    delete = db_session.query(Items).filter_by(id = item_id).one()
     form = itemForm(request.form)
     if delete.user_id != login_session['user_id']:
         flash('Unauthorized to delete this item')
@@ -78,8 +75,8 @@ def deleteItem(category_id, item_id):
     if request.method == 'POST':
         db_session.delete(delete)
         db_session.commit()
-        flash('Item {} successfully deleted!'.format('delete.name'))
-        return redirect(url_for('home.index'))
+        flash('Item {} successfully deleted!'.format(delete.name))
+        return redirect(url_for('category_owner.showCategories', category_id = category_id))
     else:
         return render_template('/deleteitem.html', category_id = category_id,
                                item_id = item_id, item = delete, form = form)

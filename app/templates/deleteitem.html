@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
+{% include "partial/header.html" %}
 
-</body>
-</html>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <h1>Are you sure you want to delete {{item.name}}</h1>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <form class="form-group" method="POST">
+    {{ form.csrf_token }}
+        <div class="col-md-12">
+            <button class="btn btn-danger" type="submit">Delete</button>
+            <a class="btn btn-default"
+               href="{{url_for('home.index')}}">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% include "partial/footer.html" %}
+{% endblock content %}

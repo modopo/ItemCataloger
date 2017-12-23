@@ -2,7 +2,6 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship
 from sqlalchemy import create_engine
-from sqlalchemy.orm import backref
 
 Base = declarative_base()
 engine = create_engine('sqlite:///catalog.db')
@@ -24,6 +23,7 @@ class Categories(Base):
     name = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    items = relationship("Items", cascade = 'delete')
 
     @property
     def serialize(self):
@@ -40,8 +40,7 @@ class Items(Base):
     name = Column(String(250), nullable=False)
     description = Column(String(1000))
     category_id = Column(Integer, ForeignKey('category.id'))
-    category = relationship(Categories, backref=backref("children",
-                                                        cascade="all_delete"))
+    category = relationship(Categories)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 

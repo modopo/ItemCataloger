@@ -46,7 +46,7 @@ def editCategory(category_id):
         db_session.add(edit)
         db_session.commit()
         flash('Category {} has been successfully edited!'.format(edit.name))
-        return redirect(url_for('home.index'))
+        return redirect(url_for('category_owner.showCategories', category_id = category_id))
     else:
         return render_template('/editcategory.html', category = edit,
                                form = form)
@@ -61,7 +61,6 @@ def deleteCategory(category_id):
         flash('Unauthorized to delete this category')
         return redirect(url_for('category_owner.showCategory',
                                 category_id = category_id))
-
     if request.method == 'POST':
         db_session.delete(delete)
         db_session.commit()
