@@ -23,7 +23,6 @@ def showItem(category_id, item_id):
 @login_require
 def newItem(category_id):
     form = itemForm(request.form)
-    category = db_session.query(Categories).filter_by(id = category_id)
     if request.method == 'POST' and form.validate():
         new = Items(name = request.form['name'],
                     description = request.form['description'],
