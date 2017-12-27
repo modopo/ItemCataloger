@@ -70,7 +70,7 @@ def deleteItem(category_id, item_id):
     form = itemForm(request.form)
     if delete.user_id != login_session['user_id']:
         flash('Unauthorized to delete this item')
-        return redirect(url_for('category_owner.showCategory',
+        return redirect(url_for('category_owner.showCategories',
                                 category_id = category_id))
     if request.method == 'POST':
         db_session.delete(delete)
