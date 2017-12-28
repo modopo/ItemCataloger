@@ -8,6 +8,7 @@ engine = create_engine('sqlite:///catalog.db')
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False,
                                          bind=engine))
 
+
 class User(Base):
     __tablename__ = 'user'
 
@@ -16,6 +17,7 @@ class User(Base):
     email = Column(String(252), nullable=False)
     picture = Column(String(250))
 
+
 class Categories(Base):
     __tablename__ = 'category'
 
@@ -23,15 +25,16 @@ class Categories(Base):
     name = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
-    items = relationship("Items", cascade = 'delete')
+    items = relationship("Items", cascade='delete')
 
     @property
     def serialize(self):
         """Return object data in serialized format"""
         return {
-            'name'  :self.name,
-            'id'    :self.id,
+            'name': self.name,
+            'id': self.id,
         }
+
 
 class Items(Base):
     __tablename__ = 'items'
@@ -48,9 +51,10 @@ class Items(Base):
     def serialize(self):
         """Return object data in serializeable format"""
         return {
-            'id'            : self.id,
-            'name'          :self.name,
-            'description'   : self.description,
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
         }
+
 
 Base.metadata.create_all(engine)

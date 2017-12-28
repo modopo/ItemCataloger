@@ -1,7 +1,6 @@
 from app import app
 import config
 
-
 if __name__ == '__main__':
     app.secret_key = config.APP_SECRET_KEY
     app.debug = config.app_debug

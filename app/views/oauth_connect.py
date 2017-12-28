@@ -15,12 +15,14 @@ from config import GOOGLE_CLIENT_ID
 
 oauth_blueprint = Blueprint('user_owner', __name__)
 
+
 @oauth_blueprint.route('/login')
 def login():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
     login_session['state'] = state
-    return render_template('login.html', STATE = state)
+    return render_template('login.html', STATE=state)
+
 
 @oauth_blueprint.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -44,9 +46,9 @@ def gconnect():
 
     # Check that the access token is valid.
     login_session['access_token'] = credentials.access_token
-    #print("access token: {}".format(access_token))
+    # print("access token: {}".format(access_token))
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
-           %  login_session['access_token'])
+           % login_session['access_token'])
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
     # If there was an error in the access token info, abort.
@@ -67,15 +69,16 @@ def gconnect():
     if result['issued_to'] != GOOGLE_CLIENT_ID:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
-        print ("Token's client ID does not match app's.")
+        print("Token's client ID does not match app's.")
         response.headers['Content-Type'] = 'application/json'
         return response
 
     stored_credentials = login_session.get('credentials')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_credentials is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(
+            json.dumps('Current user is already connected.'),
+            200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -96,7 +99,7 @@ def gconnect():
 
     user_id = userGetId((login_session['email']))
     if not user_id:
-        user_id= userCreate(login_session)
+        user_id = userCreate(login_session)
     login_session['user_id'] = user_id
 
     output = ''
@@ -105,16 +108,17 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;border-radius: ' \
+              '150px;-webkit-border-radius: 150px;' \
+              '-moz-border-radius: 150px;"> '
     flash("Logged in as %s" % login_session['username'])
-    print ("done!")
+    print("done!")
     return output
 
 
 @oauth_blueprint.route('/gdisconnect')
-
 def gdisconnect():
-        # Only disconnect a connected user.
+    # Only disconnect a connected user.
     access_token = login_session.get('access_token')
     if access_token is None:
         response = make_response(
