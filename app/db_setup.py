@@ -5,6 +5,10 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 engine = create_engine('sqlite:///catalog.db')
+
+# Limited session for changes to objects loaded in the session
+# session.commit() will be committed
+# Changes can be reverted with session.rollback()
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False,
                                          bind=engine))
 

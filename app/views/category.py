@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask import session as login_session
-from app.forms import categoryForm
-from app.decoratorlogin import login_require
+from app.forms import CategoryForm
+from app.decorator_login import login_require
 from app.db_setup import db_session, Categories, Items
 
 category_blueprint = Blueprint('category_owner', __name__)
@@ -9,7 +9,7 @@ category_blueprint = Blueprint('category_owner', __name__)
 
 # displays all the items within the category
 @category_blueprint.route('/category/<int:category_id>')
-def showCategories(category_id):
+def show_categories(category_id):
     category = db_session.query(Categories).filter_by(id=category_id).one()
     items = db_session.query(Items).filter_by(category_id=category_id).all()
     return render_template('category.html', category_id=category_id,
@@ -19,8 +19,8 @@ def showCategories(category_id):
 # create a new category
 @category_blueprint.route('/category/new', methods=['GET', 'POST'])
 @login_require
-def newCategory():
-    form = categoryForm(request.form)
+def new_category():
+    form = CategoryForm(request.form)
     if request.method == 'POST' and form.validate():
         new = Categories(name=request.form['name'],
                          user_id=login_session['user_id'])
@@ -35,9 +35,9 @@ def newCategory():
 @category_blueprint.route('/category/<int:category_id>/edit',
                           methods=['GET', 'POST'])
 @login_require
-def editCategory(category_id):
+def edit_category(category_id):
     edit = db_session.query(Categories).filter_by(id=category_id).one()
-    form = categoryForm(request.form)
+    form = CategoryForm(request.form)
 
     if edit.user_id != login_session['user_id']:
         flash('Unauthorized to edit this category')
@@ -48,7 +48,7 @@ def editCategory(category_id):
         db_session.add(edit)
         db_session.commit()
         flash('Category {} has been successfully edited!'.format(edit.name))
-        return redirect(url_for('category_owner.showCategories',
+        return redirect(url_for('category_owner.show_categories',
                                 category_id=category_id))
     else:
         return render_template('/editcategory.html', category=edit,
@@ -59,12 +59,12 @@ def editCategory(category_id):
 @category_blueprint.route('/category/<int:category_id>/delete',
                           methods=['GET', 'POST'])
 @login_require
-def deleteCategory(category_id):
+def delete_category(category_id):
     delete = db_session.query(Categories).filter_by(id=category_id).one()
-    form = categoryForm(request.form)
+    form = CategoryForm(request.form)
     if delete.user_id != login_session['user_id']:
         flash('Unauthorized to delete this category')
-        return redirect(url_for('category_owner.showCategories',
+        return redirect(url_for('category_owner.show_categories',
                                 category_id=category_id))
     if request.method == 'POST':
         db_session.delete(delete)

@@ -3,7 +3,7 @@ from flask import Flask
 from .views.index import index_blueprint
 from .views.category import category_blueprint
 from .views.items import item_blueprint
-from .views.jsonAPI import api_blueprint
+from .views.json_api import api_blueprint
 from .views.oauth_connect import oauth_blueprint
 
 app = Flask(__name__)

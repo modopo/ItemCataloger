@@ -1,4 +1,5 @@
-import random, string
+import random
+import string
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import session as login_session
 
@@ -9,7 +10,7 @@ import httplib2
 import requests
 import json
 
-from app.userConstruct import userGetId, userCreate
+from app.user_construct import user_get_id, user_create
 
 from config import GOOGLE_CLIENT_ID
 
@@ -97,9 +98,9 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
-    user_id = userGetId((login_session['email']))
+    user_id = user_get_id((login_session['email']))
     if not user_id:
-        user_id = userCreate(login_session)
+        user_id = user_create(login_session)
     login_session['user_id'] = user_id
 
     output = ''
