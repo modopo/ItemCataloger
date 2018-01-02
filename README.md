@@ -31,7 +31,7 @@ Google's OAuth API information. Refer to Google's documentaion:
 
 [Using OAuth 2.0 to Access Google APIs - Google Developers](https://developers.google.com/identity/protocols/OAuth2)
 
-Add in your onw "client_id" and "client_secret". The file should look similar to this:
+Add in your own "client_id" and "client_secret". The file should look similar to:
 
 ```
 {
