@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify
-
 from app.db_setup import db_session, Categories, Items
 
 api_blueprint = Blueprint('api', __name__)
@@ -17,7 +16,7 @@ def allItemInCategoryJSON(category_id):
     return jsonify(items=[x.serialize for x in items])
 
 
-@api_blueprint.route('/category/<int:category_id>/item/<int:item_id>')
-def itemJSON(item_id):
+@api_blueprint.route('/category/<int:category_id>/item/<int:item_id>/JSON')
+def itemJSON(item_id, category_id):
     details = db_session.query(Items).filter_by(id=item_id).one()
     return jsonify(item=details.serialize)
